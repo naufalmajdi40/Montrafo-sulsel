@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Montrafo </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div class="topnav">
+    <a class="active" href="/index">Home</a>
+    <a href="/config">Config</a>
+  </div>
+  
+  <div style="padding-left:16px">
+    <h2>MONTRAFO</h2>
+  </div>
+
+  <div>
+    <div class="flex-container">
+      <div class="card">
+        <div class="container">
+          <h4><b>Voltage R</b></h4> 
+          <p id="vr">1000</p> 
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="container">
+          <h4><b>Voltage S</b></h4> 
+          <p id="vs">1000</p> 
+        </div>
+      </div>
+      <div class="card">
+        <div class="container">
+          <h4><b>Voltage T</b></h4> 
+          <p id="vt">1000</p> 
+        </div>
+      </div>
+      <div class="card">
+        <div class="container">
+          <h4><b>Current R</b></h4> 
+          <p id="ir">1000</p> 
+        </div>
+      </div>
+      <div class="card">
+        <div class="container">
+          <h4><b>Current S</b></h4> 
+          <p id="is">1000</p> 
+        </div>
+      </div>
+      <div class="card">
+        <div class="container">
+          <h4><b>Current T</b></h4> 
+          <p id="it">1000</p> 
+        </div>
+      </div>
+      <div class="card">
+        <div class="container">
+          <h4><b>Freq</b></h4> 
+          <p id="f">1000</p> 
+        </div>
+      </div>
+      <div class="card">
+        <div class="container">
+          <h4><b>Temperature</b></h4> 
+          <p id="t">1000</p> 
+        </div>
+      </div>
+    </div>
+</div>
+<script>
+  const url ="/getData"
+  async function fetchText() {
+    let response = await fetch(url);
+    if (response.status === 200) {
+        let data = await response.text();
+        //tb = document.querySelector('#tb1')
+     
+        dtJSON = JSON.parse(data)
+        document.getElementById("vr").innerHTML=dtJSON.vr;
+        document.getElementById("vs").innerHTML=dtJSON.vs;
+        document.getElementById("vt").innerHTML=dtJSON.vt;
+        document.getElementById("ir").innerHTML=dtJSON.ir;
+        document.getElementById("is").innerHTML=dtJSON.is;
+        document.getElementById("it").innerHTML=dtJSON.it;
+        document.getElementById("f").innerHTML=dtJSON.f;
+        document.getElementById("t").innerHTML=dtJSON.t;
+    }
+}
+fetchText()
+setInterval(function(){fetchText()},10000)
+</script>
+</body>
+</html>
+

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Montrafo </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div class="topnav">
+    <a  href="/index">Home</a>
+    <a class="active" href="/config">Config</a>
+  </div>
+  <br>  
+    <div class="flex-container">
+      <div class="card-2">
+        <div class="container">
+          <h3><b>LoRa Connection</b></h3> 
+            <label for="devAdd">DEV ADDRESS</label>
+            <input type="text" id="devAdd" name="devAdd" placeholder="Your name.." value="00000000" disabled>
+            <label for="nwsk">NETWORK SESSION KEY</label>
+            <input type="text" id="nwsk" name="nwsk" value="00000000000000000000000000000000" disabled>
+            <label for="nwsk">APP SESSION KEY</label>
+            <input type="text" id="appsk" name="appsk" value="00000000000000000000000000000000" disabled> 
+            <label for="intv">Sending Interval(ms)</label>
+            <input type="number" id="intv" placeholder="Sending Interval">
+          <h3><b>WiFi Connection</b></h3> 
+            <label for="ssid">SSID</label>
+            <input type="text" id="ssid" placeholder="ssid" >
+            <label for="pass">PASSWORD</label>
+            <input type="password" id="pass" >
+            <input type="checkbox" id="rc" name="rc" >
+            <label for="rc"> Enable Reconnect Wifi</label><br>
+            <input type="submit" id="saveWifi" onClick="save()" value="SAVE"> 
+            
+            
+          </div>
+        </div>
+
+    </div>
+
+<script>
+  async function fetchConfig() {
+    let url="/getConfig"
+    let response = await fetch(url);
+    if (response.status === 200) {
+        let data = await response.text();
+        dtJSON = JSON.parse(data)
+        document.getElementById("devAdd").value=dtJSON.devAddr;
+        document.getElementById("nwsk").value=dtJSON.nwkSKey;
+        document.getElementById("appsk").value=dtJSON.appSKey;
+
+        document.getElementById("ssid").value=dtJSON.ssid;
+        document.getElementById("pass").value=dtJSON.pass;
+        document.getElementById("intv").value=dtJSON.intv;
+        document.getElementById("rc").checked=dtJSON.rc;
+        //console.log()
+  
+        
+        
+    }
+}
+fetchConfig()
+
+function save(){
+ // alert("save")
+    let ssid=document.getElementById("ssid").value
+    let pass=document.getElementById("pass").value
+    let intv=document.getElementById("intv").value
+    let rc=document.getElementById("rc").checked
+    fetch("/saveConfig",
+{
+    method: "POST",
+
+    // whatever data you want to post with a key-value pair
+
+    //body: "ssid=manas&age=20",
+    body:`ssid=${ssid}&pass=${pass}&intv=${intv}&rc=${rc}`,
+    headers: 
+    {
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+
+}).then((response) => 
+{ 
+  alert("Data Saved, Device is restarted")
+    // do something awesome that makes the world a better place
+});
+}
+</script>
+</body>
+</html>
+
